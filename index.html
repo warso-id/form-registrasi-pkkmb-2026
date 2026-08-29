@@ -5,13 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Sistem PKKMB 2026 - Ultimate Production System</title>
     
-    <!-- Library External -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    
     <style>
         :root {
             --primary: #1a3e6f;
@@ -570,47 +563,35 @@
         </div>
         <div class="flex-row">
             <span class="badge-base64">⚡ Base64 Support</span>
-            <span class="chip">☁️ Cloud Connected</span>
             <span class="chip" id="connection-status">🔄 Connecting...</span>
             <span id="user-badge" class="user-badge hidden"></span>
-            <button class="btn btn-sm btn-outline" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+            <button class="btn btn-sm btn-outline" onclick="toggleDarkMode()">🌙</button>
             <button class="btn btn-sm btn-outline" id="login-btn" onclick="showLoginModal()">🔐 Login</button>
             <button class="btn btn-sm btn-outline hidden" id="logout-btn" onclick="logout()">🚪 Logout</button>
             <button class="btn btn-sm btn-outline" onclick="showRegisterModal()">📝 Registrasi</button>
-            <button class="btn btn-sm btn-outline" onclick="showResetPasswordModal()">🔑 Reset Password</button>
+            <button class="btn btn-sm btn-outline" onclick="showResetPasswordModal()">🔑 Reset</button>
         </div>
     </header>
 
     <!-- Alert Info -->
-    <div class="alert alert-info no-print" id="alert-info">
-        🔒 Sistem keamanan terintegrasi. Data tersimpan lokal dan cloud.
+    <div class="alert alert-info no-print">
+        🔒 Sistem keamanan terintegrasi. Data tersimpan lokal.
         <button class="btn btn-sm btn-outline" onclick="testConnection()">Test Koneksi</button>
         <button class="btn btn-sm btn-outline admin-only" onclick="syncWithCloud()">🔄 Sync Cloud</button>
         <button class="btn btn-sm btn-outline admin-only" onclick="loadFromCloud()">📥 Load Cloud</button>
         <button class="btn btn-sm btn-outline admin-only" onclick="showImportModal()">📤 Import CSV</button>
-        <button class="btn btn-sm btn-outline admin-only" onclick="showUserManagement()">👥 Users</button>
         <span class="security-badge security-high" id="security-status">🔒 SECURE</span>
     </div>
 
     <!-- Dashboard -->
     <div class="card" id="section-dashboard">
         <h2>📊 Dashboard PKKMB 2026</h2>
-        <div class="dashboard-stats" id="dashboard-stats">
-            <div class="stat-card" onclick="showSection('peserta')">
-                <h3 id="stat-peserta">0</h3><p>Total Peserta</p>
-            </div>
-            <div class="stat-card" onclick="showSection('presensi')">
-                <h3 id="stat-hadir">0</h3><p>Total Kehadiran</p>
-            </div>
-            <div class="stat-card" onclick="showSection('presensi')">
-                <h3 id="stat-presensi">0</h3><p>Total Presensi</p>
-            </div>
-            <div class="stat-card" onclick="showSection('materi')">
-                <h3 id="stat-materi">0</h3><p>Total Materi</p>
-            </div>
-            <div class="stat-card" onclick="showSection('kelompok')">
-                <h3 id="stat-kelompok">0</h3><p>Total Kelompok</p>
-            </div>
+        <div class="dashboard-stats">
+            <div class="stat-card" onclick="showSection('peserta')"><h3 id="stat-peserta">0</h3><p>Total Peserta</p></div>
+            <div class="stat-card" onclick="showSection('presensi')"><h3 id="stat-hadir">0</h3><p>Total Kehadiran</p></div>
+            <div class="stat-card" onclick="showSection('presensi')"><h3 id="stat-presensi">0</h3><p>Total Presensi</p></div>
+            <div class="stat-card" onclick="showSection('materi')"><h3 id="stat-materi">0</h3><p>Total Materi</p></div>
+            <div class="stat-card" onclick="showSection('kelompok')"><h3 id="stat-kelompok">0</h3><p>Total Kelompok</p></div>
         </div>
         
         <div class="chart-container">
@@ -618,14 +599,8 @@
         </div>
         
         <div class="grid-2">
-            <div>
-                <h3>📈 Kehadiran Hari Ini</h3>
-                <div id="kehadiran-hari-ini">Belum ada data</div>
-            </div>
-            <div>
-                <h3>📊 Status Sertifikat</h3>
-                <div id="status-sertifikat">Belum ada data</div>
-            </div>
+            <div><h3>📈 Kehadiran Hari Ini</h3><div id="kehadiran-hari-ini">Belum ada data</div></div>
+            <div><h3>📊 Status Sertifikat</h3><div id="status-sertifikat">Belum ada data</div></div>
         </div>
         
         <div id="mahasiswa-info" class="hidden">
@@ -640,8 +615,8 @@
         </div>
     </div>
 
-    <!-- Navigation Cards -->
-    <div class="card no-print" id="section-navigation">
+    <!-- Navigation -->
+    <div class="card no-print">
         <h2>📋 Navigasi Modul</h2>
         <div class="flex-row" style="gap:8px; flex-wrap:wrap;">
             <button class="btn btn-outline" onclick="showSection('dashboard')">📊 Dashboard</button>
@@ -660,42 +635,24 @@
         </div>
     </div>
 
-    <!-- Bagian Peserta -->
+    <!-- Section Peserta -->
     <div id="section-peserta" class="card hidden">
         <h2>👤 Data Identitas Peserta</h2>
         <div class="flex-row" style="margin-bottom:12px;">
-            <input id="search-peserta" placeholder="🔍 Cari NIM/Nama..." style="max-width:300px;" onkeyup="filterPeserta()">
-            <select id="filter-fakultas" onchange="filterPeserta()" style="max-width:200px;">
-                <option value="">Semua Fakultas</option>
-            </select>
-            <select id="filter-status" onchange="filterPeserta()" style="max-width:200px;">
-                <option value="">Semua Status</option>
-                <option value="Mahasiswa baru">Mahasiswa baru</option>
-                <option value="Belum pernah PKKMB">Belum pernah PKKMB</option>
-            </select>
+            <input id="search-peserta" placeholder="🔍 Cari..." style="max-width:300px;" onkeyup="filterPeserta()">
+            <select id="filter-fakultas" onchange="filterPeserta()" style="max-width:200px;"><option value="">Semua Fakultas</option></select>
             <button class="btn btn-sm btn-outline admin-only" onclick="exportPesertaCSV()">📤 CSV</button>
-            <button class="btn btn-sm btn-outline admin-only" onclick="exportPesertaPDF()">📄 PDF</button>
         </div>
-        
-        <div class="bulk-actions admin-only">
-            <button class="btn btn-sm btn-danger" onclick="bulkDeletePeserta()">🗑️ Bulk Delete</button>
-            <button class="btn btn-sm btn-outline" onclick="selectAllPeserta()">☑️ Select All</button>
-        </div>
-        
         <div class="grid-2">
-            <div class="form-group"><label>ID Peserta</label><input id="p_id" disabled placeholder="Auto" value="AUTO-2026-0001"></div>
             <div class="form-group"><label>NIM *</label><input id="p_nim" required></div>
             <div class="form-group"><label>Nama Lengkap *</label><input id="p_nama" required></div>
             <div class="form-group"><label>Fakultas *</label><input id="p_fakultas" required></div>
             <div class="form-group"><label>Program Studi *</label><input id="p_prodi" required></div>
-            <div class="form-group"><label>Jenjang *</label><select id="p_jenjang"><option>D3</option><option>S1</option><option>S2</option><option>S3</option><option>Profesi</option></select></div>
+            <div class="form-group"><label>Jenjang *</label><select id="p_jenjang"><option>D3</option><option>S1</option><option>S2</option><option>S3</option></select></div>
             <div class="form-group"><label>Tahun Akademik *</label><input id="p_tahun" value="2026/2027"></div>
             <div class="form-group"><label>Status *</label><select id="p_status"><option>Mahasiswa baru</option><option>Belum pernah PKKMB</option></select></div>
             <div class="form-group"><label>Asal Sekolah *</label><input id="p_sekolah"></div>
-            <div class="form-group"><label>Jenis Sekolah *</label><select id="p_jenis_sekolah"><option>SMA</option><option>SMK</option><option>MA</option><option>Paket C</option><option>Lainnya</option></select></div>
-            <div class="form-group"><label>Jurusan</label><input id="p_jurusan"></div>
-            <div class="form-group"><label>Kota Sekolah</label><input id="p_kota_sekolah"></div>
-            <div class="form-group"><label>Tahun Lulus</label><input id="p_tahun_lulus"></div>
+            <div class="form-group"><label>Jenis Sekolah *</label><select id="p_jenis_sekolah"><option>SMA</option><option>SMK</option><option>MA</option><option>Paket C</option></select></div>
         </div>
         <div class="flex-row">
             <button class="btn" onclick="simpanPeserta()">💾 Simpan</button>
@@ -704,28 +661,20 @@
         <div class="divider"></div>
         <div class="table-responsive">
             <table id="tabel-peserta">
-                <thead>
-                    <tr>
-                        <th class="checkbox-cell"><input type="checkbox" id="check-all-peserta" onchange="toggleAllPeserta()"></th>
-                        <th>NIM</th><th>Nama</th><th>Fakultas</th><th>Prodi</th><th>Status</th><th>Aksi</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>NIM</th><th>Nama</th><th>Fakultas</th><th>Prodi</th><th>Status</th><th>Aksi</th></tr></thead>
                 <tbody></tbody>
             </table>
         </div>
-        <div class="pagination" id="pagination-peserta"></div>
     </div>
 
-    <!-- Bagian Kontak -->
+    <!-- Section Kontak -->
     <div id="section-kontak" class="card hidden">
         <h2>📞 Data Kontak Peserta</h2>
         <div class="grid-2">
             <div class="form-group"><label>NIM *</label><input id="k_nim" required></div>
             <div class="form-group"><label>WhatsApp *</label><input id="k_wa" required></div>
             <div class="form-group"><label>Email *</label><input id="k_email" required></div>
-            <div class="form-group"><label>Alamat</label><input id="k_alamat"></div>
             <div class="form-group"><label>Kota</label><input id="k_kota"></div>
-            <div class="form-group"><label>Provinsi</label><input id="k_provinsi"></div>
         </div>
         <button class="btn" onclick="simpanKontak()">💾 Simpan</button>
         <div class="table-responsive">
@@ -736,17 +685,14 @@
         </div>
     </div>
 
-    <!-- Bagian Kelompok -->
+    <!-- Section Kelompok -->
     <div id="section-kelompok" class="card hidden">
         <h2>👥 Data Kelompok PKKMB</h2>
         <div class="grid-2">
             <div class="form-group"><label>ID Kelompok</label><input id="kel_id"></div>
             <div class="form-group"><label>Nomor</label><input id="kel_nomor"></div>
             <div class="form-group"><label>Nama Kelompok</label><input id="kel_nama"></div>
-            <div class="form-group"><label>Fakultas</label><input id="kel_fakultas"></div>
-            <div class="form-group"><label>Prodi</label><input id="kel_prodi"></div>
             <div class="form-group"><label>Pendamping</label><input id="kel_pendamping"></div>
-            <div class="form-group"><label>Koordinator</label><input id="kel_koordinator"></div>
             <div class="form-group"><label>Ruangan</label><input id="kel_ruangan"></div>
             <div class="form-group"><label>Lokasi</label><input id="kel_lokasi"></div>
         </div>
@@ -759,7 +705,7 @@
         </div>
     </div>
 
-    <!-- Bagian Anggota Kelompok -->
+    <!-- Section Anggota -->
     <div id="section-anggota" class="card hidden">
         <h2>👥 Anggota Kelompok</h2>
         <div class="grid-2">
@@ -777,11 +723,10 @@
         </div>
     </div>
 
-    <!-- Bagian Presensi -->
+    <!-- Section Presensi -->
     <div id="section-presensi" class="card hidden">
         <h2>✅ Presensi PKKMB</h2>
-        <div class="alert alert-warning">Presensi per sesi. Pilih hari, sesi, status, dan mode.</div>
-        <div class="session-tabs" id="session-tabs">
+        <div class="session-tabs">
             <button class="session-tab active" onclick="setSesi('Hari 1', 'Sesi 1')">H1-S1</button>
             <button class="session-tab" onclick="setSesi('Hari 1', 'Sesi 2')">H1-S2</button>
             <button class="session-tab" onclick="setSesi('Hari 1', 'Sesi 3')">H1-S3</button>
@@ -795,22 +740,6 @@
             <button class="session-tab" onclick="setSesi('Hari 3', 'Sesi 3')">H3-S3</button>
             <button class="session-tab" onclick="setSesi('Hari 3', 'Sesi 4')">H3-S4</button>
         </div>
-        
-        <div class="filter-group">
-            <input id="filter-presensi-tanggal" type="date" onchange="filterPresensi()" style="max-width:200px;">
-            <select id="filter-presensi-hari" onchange="filterPresensi()" style="max-width:150px;">
-                <option value="">Semua Hari</option>
-                <option value="Hari 1">Hari 1</option>
-                <option value="Hari 2">Hari 2</option>
-                <option value="Hari 3">Hari 3</option>
-            </select>
-            <select id="filter-presensi-status" onchange="filterPresensi()" style="max-width:150px;">
-                <option value="">Semua Status</option>
-                <option value="Hadir">Hadir</option>
-                <option value="Tidak Hadir">Tidak Hadir</option>
-            </select>
-        </div>
-        
         <div class="grid-2">
             <div class="form-group"><label>NIM *</label><input id="pres_nim" required></div>
             <div class="form-group"><label>Tanggal *</label><input id="pres_tanggal" type="date"></div>
@@ -818,12 +747,11 @@
             <div class="form-group"><label>Sesi *</label><select id="pres_sesi"><option>Sesi 1</option><option>Sesi 2</option><option>Sesi 3</option><option>Sesi 4</option></select></div>
             <div class="form-group"><label>Status *</label><select id="pres_status" onchange="toggleAlasan()"><option value="Hadir">Hadir</option><option value="Tidak Hadir">Tidak Hadir</option></select></div>
             <div class="form-group" id="mode-group"><label>Mode</label><select id="pres_mode"><option>Offline/Luring</option><option>Online/Daring</option></select></div>
-            <div class="form-group hidden" id="alasan-group"><label>Alasan</label><select id="pres_alasan"><option>Sakit</option><option>Keperluan keluarga</option><option>Kendala transportasi</option><option>Kendala teknis</option><option>Keperluan akademik</option><option>Darurat</option><option>Izin resmi</option><option>Lainnya</option></select></div>
+            <div class="form-group hidden" id="alasan-group"><label>Alasan</label><select id="pres_alasan"><option>Sakit</option><option>Keperluan keluarga</option><option>Lainnya</option></select></div>
             <div class="form-group hidden" id="keterangan-group"><label>Keterangan</label><textarea id="pres_keterangan" rows="2"></textarea></div>
         </div>
         <button class="btn" onclick="simpanPresensi()">✅ Simpan</button>
         <button class="btn btn-outline" onclick="rekapKehadiran()">📊 Rekap</button>
-        <button class="btn btn-outline admin-only" onclick="exportPresensiCSV()">📤 CSV</button>
         <div class="divider"></div>
         <div class="table-responsive">
             <table id="tabel-presensi">
@@ -833,7 +761,7 @@
         </div>
     </div>
 
-    <!-- Bagian Materi -->
+    <!-- Section Materi -->
     <div id="section-materi" class="card hidden">
         <h2>📚 Materi & Kegiatan</h2>
         <div class="grid-2">
@@ -842,9 +770,6 @@
             <div class="form-group"><label>Nama Materi *</label><input id="mat_nama" required></div>
             <div class="form-group"><label>Narasumber</label><input id="mat_narasumber"></div>
             <div class="form-group"><label>Tanggal</label><input id="mat_tanggal" type="date"></div>
-            <div class="form-group"><label>Jam Mulai</label><input id="mat_jam_mulai" type="time"></div>
-            <div class="form-group"><label>Jam Selesai</label><input id="mat_jam_selesai" type="time"></div>
-            <div class="form-group"><label>Metode</label><input id="mat_metode"></div>
             <div class="form-group"><label>Lokasi</label><input id="mat_lokasi"></div>
         </div>
         <button class="btn admin-panitia-only" onclick="simpanMateri()">💾 Simpan</button>
@@ -856,7 +781,7 @@
         </div>
     </div>
 
-    <!-- Bagian Evaluasi -->
+    <!-- Section Evaluasi -->
     <div id="section-evaluasi" class="card hidden">
         <h2>📝 Evaluasi PKKMB</h2>
         <div class="grid-2">
@@ -864,9 +789,6 @@
             <div class="form-group"><label>Materi (1-5)</label><input id="ev_materi" type="number" min="1" max="5" value="5"></div>
             <div class="form-group"><label>Narasumber (1-5)</label><input id="ev_narasumber" type="number" min="1" max="5" value="5"></div>
             <div class="form-group"><label>Panitia (1-5)</label><input id="ev_panitia" type="number" min="1" max="5" value="5"></div>
-            <div class="form-group"><label>Fasilitas (1-5)</label><input id="ev_fasilitas" type="number" min="1" max="5" value="5"></div>
-            <div class="form-group"><label>Keamanan (1-5)</label><input id="ev_keamanan" type="number" min="1" max="5" value="5"></div>
-            <div class="form-group"><label>Manfaat (1-5)</label><input id="ev_manfaat" type="number" min="1" max="5" value="5"></div>
             <div class="form-group"><label>Saran</label><textarea id="ev_saran" rows="2"></textarea></div>
         </div>
         <button class="btn" onclick="simpanEvaluasi()">📝 Simpan</button>
@@ -878,7 +800,7 @@
         </div>
     </div>
 
-    <!-- Bagian Antikekerasan -->
+    <!-- Section Antikekerasan -->
     <div id="section-antikekerasan" class="card hidden">
         <h2>🛡️ Pernyataan Antikekerasan</h2>
         <div class="form-group">
@@ -888,7 +810,6 @@
         <div class="form-group"><label>Kanal Pelaporan</label><select id="ak_kanal"><option>Ya</option><option>Tidak</option></select></div>
         <button class="btn" onclick="simpanPernyataan()">✍️ Simpan</button>
         <button class="btn btn-danger" onclick="laporkan()">📢 LAPORKAN</button>
-        <div class="divider"></div>
         <div class="table-responsive">
             <table id="tabel-antikekerasan">
                 <thead><tr><th>NIM</th><th>Persetujuan</th><th>Kanal</th><th>Timestamp</th></tr></thead>
@@ -897,7 +818,7 @@
         </div>
     </div>
 
-    <!-- Bagian Sertifikat -->
+    <!-- Section Sertifikat -->
     <div id="section-sertifikat" class="card hidden">
         <h2>📜 Sertifikat PKKMB</h2>
         <div class="grid-2">
@@ -909,27 +830,6 @@
         </div>
         <button class="btn admin-only" onclick="simpanSertifikat()">📜 Simpan</button>
         <button class="btn btn-outline" onclick="generateQRCode()">🔳 QR Code</button>
-        <button class="btn btn-outline" onclick="printSertifikat()">🖨️ Print</button>
-        <button class="btn btn-outline" onclick="exportSertifikatPDF()">📄 PDF</button>
-        <div class="divider"></div>
-        
-        <div id="sertifikat-preview" class="hidden" style="border:2px solid var(--primary); padding:40px; text-align:center; margin:20px 0;">
-            <h1 style="font-size:2.5rem; color:var(--primary);">SERTIFIKAT</h1>
-            <p style="font-size:1.2rem;">PKKMB 2026</p>
-            <div style="margin:20px 0;">
-                <p>Diberikan kepada:</p>
-                <h2 id="sertifikat-nama" style="font-size:1.8rem; color:var(--primary);">[Nama]</h2>
-                <p>NIM: <span id="sertifikat-nim">[NIM]</span></p>
-            </div>
-            <p>Status:</p>
-            <h3 id="sertifikat-status" style="color:var(--success);">MEMENUHI SYARAT</h3>
-            <p id="sertifikat-persentase">Kehadiran: 100%</p>
-            <div style="margin-top:40px; display:flex; justify-content:space-between;">
-                <div><p>_______________</p><p>Ketua Panitia</p></div>
-                <div><p>_______________</p><p>Rektor</p></div>
-            </div>
-        </div>
-        
         <div class="table-responsive">
             <table id="tabel-sertifikat">
                 <thead><tr><th>NIM</th><th>Nomor</th><th>Status</th><th>Persentase</th><th>QR</th><th>Aksi</th></tr></thead>
@@ -945,13 +845,10 @@
         </div>
     </div>
 
-    <!-- Bagian Log -->
+    <!-- Section Log -->
     <div id="section-log" class="card hidden">
         <h2>📋 Log System</h2>
-        <div class="flex-row" style="margin-bottom:12px;">
-            <button class="btn btn-sm btn-outline" onclick="clearLog()">🗑️ Clear</button>
-            <button class="btn btn-sm btn-outline" onclick="exportLogCSV()">📤 CSV</button>
-        </div>
+        <button class="btn btn-sm btn-outline" onclick="clearLog()">🗑️ Clear</button>
         <div class="table-responsive">
             <table id="tabel-log">
                 <thead><tr><th>Timestamp</th><th>Aksi</th><th>Modul</th><th>Detail</th><th>User</th></tr></thead>
@@ -960,24 +857,20 @@
         </div>
     </div>
 
-    <!-- Bagian Base64 -->
+    <!-- Section Base64 -->
     <div id="section-base64" class="card hidden">
         <h2>💾 Base64 Tools</h2>
         <div class="flex-row" style="margin:12px 0;">
             <button class="btn btn-success" onclick="eksporBase64()">⬇️ Ekspor</button>
             <button class="btn btn-warning" onclick="imporBase64()">⬆️ Impor</button>
             <button class="btn btn-danger" onclick="resetData()">🗑️ Reset</button>
-            <button class="btn btn-outline" onclick="eksporJSON()">📄 JSON</button>
-            <button class="btn btn-outline" onclick="imporJSON()">📄 Impor JSON</button>
             <button class="btn btn-outline" onclick="backupData()">💾 Backup</button>
             <button class="btn btn-outline" onclick="restoreBackup()">📂 Restore</button>
-            <button class="btn btn-outline" onclick="compressData()">🗜️ Kompres</button>
-            <button class="btn btn-outline" onclick="syncBase64ToCloud()">☁️ Sync Base64</button>
         </div>
         <label>Hasil:</label>
         <div class="base64-box" id="base64-output">Klik Ekspor untuk hasil</div>
         <label style="margin-top:12px;">Input:</label>
-        <textarea id="base64-input" rows="4" placeholder="Tempel Base64/JSON..."></textarea>
+        <textarea id="base64-input" rows="4" placeholder="Tempel Base64..."></textarea>
     </div>
 
     <!-- Recycle Bin -->
@@ -1041,152 +934,80 @@
         </div>
     </div>
 
-    <!-- User Management Modal -->
-    <div id="user-management-modal" class="modal">
-        <div class="modal-content">
-            <h2>👥 User Management</h2>
-            <div class="table-responsive">
-                <table id="tabel-users">
-                    <thead><tr><th>Username</th><th>Nama</th><th>Role</th><th>Aksi</th></tr></thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-            <button class="btn btn-outline" onclick="closeUserManagement()">Tutup</button>
-        </div>
-    </div>
-
     <!-- Import Modal -->
     <div id="import-modal" class="modal">
         <div class="modal-content">
-            <h2>📤 Import CSV/Excel</h2>
+            <h2>📤 Import CSV</h2>
             <div class="upload-area" onclick="document.getElementById('file-input').click()">
                 <p>📁 Klik untuk upload</p>
                 <p style="font-size:0.8rem;">Format: NIM,Nama,Fakultas,Prodi</p>
             </div>
-            <input type="file" id="file-input" accept=".csv,.xlsx,.xls" style="display:none;" onchange="handleFileUpload(event)">
-            <div id="import-progress" class="progress-bar hidden">
-                <div class="progress-fill" id="import-progress-fill" style="width:0%"></div>
-            </div>
+            <input type="file" id="file-input" accept=".csv" style="display:none;" onchange="handleFileUpload(event)">
             <button class="btn btn-outline" onclick="closeImportModal()">Tutup</button>
         </div>
     </div>
 
     <div class="footer no-print">
-        Sistem PKKMB 2026 • Production System dengan Keamanan Terintegrasi
+        Sistem PKKMB 2026 • Production System - Full Offline Support
     </div>
 </div>
 
 <script>
-    // Konfigurasi
+    // ============================================
+    // KONFIGURASI
+    // ============================================
     const GAS_URL = 'https://script.google.com/macros/s/AKfycby1u0PTsvGjKaPVCzQDMZ9wnDaRygmcovRo6qpZT0QTlnhuOvNb-PO1FRCRMKMQ6ulIsw/exec';
     const ENCRYPTION_KEY = 'PKKMB-2026-SECRET-KEY';
     const SESSION_TIMEOUT = 8 * 60 * 60 * 1000;
-    const MAX_RETRIES = 3;
-    const RETRY_DELAY = 1000;
     
-    // State
+    // ============================================
+    // STATE
+    // ============================================
     let db = {
-        peserta: [],
-        kontak: [],
-        kelompok: [],
-        anggotaKelompok: [],
-        materi: [],
-        presensi: [],
-        evaluasi: [],
-        sertifikat: [],
-        antikekerasan: [],
-        log: [],
-        recycleBin: [],
-        users: [],
-        currentUser: null,
-        selectedPeserta: [],
-        csrfToken: null
+        peserta: [], kontak: [], kelompok: [], anggotaKelompok: [],
+        materi: [], presensi: [], evaluasi: [], sertifikat: [],
+        antikekerasan: [], log: [], recycleBin: [],
+        users: [
+            { username: 'admin', password: 'admin123', role: 'admin', nama: 'Administrator' },
+            { username: 'panitia', password: 'panitia123', role: 'panitia', nama: 'Panitia PKKMB' }
+        ],
+        currentUser: null, selectedPeserta: [], csrfToken: null
     };
     
-    let currentPage = { peserta: 1, presensi: 1, materi: 1 };
-    const itemsPerPage = 10;
     let currentSession = { hari: 'Hari 1', sesi: 'Sesi 1' };
-    let autoBackupInterval;
     let kehadiranChart = null;
-    let indexedDB = null;
     let isOnline = navigator.onLine;
     let syncQueue = [];
     let isSyncing = false;
     
-    // Offline Queue System
-    window.addEventListener('online', () => {
-        isOnline = true;
-        document.getElementById('offline-indicator').style.display = 'none';
-        showToast('Koneksi kembali! Memproses antrian sync...', 'success');
-        processSyncQueue();
-    });
-    
-    window.addEventListener('offline', () => {
-        isOnline = false;
-        document.getElementById('offline-indicator').style.display = 'block';
-        showToast('Anda offline. Data disimpan lokal.', 'warning');
-    });
-    
-    function initIndexedDB() {
-        const request = window.indexedDB.open('PKKMB2026', 1);
-        
-        request.onupgradeneeded = function(e) {
-            const db = e.target.result;
-            if (!db.objectStoreNames.contains('data')) {
-                db.createObjectStore('data', { keyPath: 'id' });
-            }
-        };
-        
-        request.onsuccess = function(e) {
-            indexedDB = e.target.result;
-            loadFromIndexedDB();
-        };
-        
-        request.onerror = function(e) {
-            console.error('IndexedDB error:', e);
-        };
-    }
-    
-    function saveToIndexedDB() {
-        if (!indexedDB) return;
-        const transaction = indexedDB.transaction(['data'], 'readwrite');
-        const store = transaction.objectStore('data');
-        store.put({ id: 'main', data: db });
-    }
-    
-    function loadFromIndexedDB() {
-        if (!indexedDB) return;
-        const transaction = indexedDB.transaction(['data'], 'readonly');
-        const store = transaction.objectStore('data');
-        const request = store.get('main');
-        
-        request.onsuccess = function(e) {
-            if (e.target.result) {
-                db = e.target.result.data;
-                renderAll();
-                updateFakultasFilter();
-                updateKelompokOptions();
-            }
-        };
-    }
-    
+    // ============================================
+    // LOAD DATA
+    // ============================================
     try {
         const saved = localStorage.getItem('pkkmb2026_db');
         if (saved) db = JSON.parse(saved);
-    } catch(e) {}
-    
-    if (!db.users || db.users.length === 0) {
-        db.users = [
-            { username: 'admin', password: 'admin123', role: 'admin', nama: 'Administrator' },
-            { username: 'panitia', password: 'panitia123', role: 'panitia', nama: 'Panitia PKKMB' }
-        ];
+    } catch(e) {
+        console.warn('Gagal load localStorage:', e);
     }
     
-    if (!db.recycleBin) db.recycleBin = [];
+    // ============================================
+    // UTILITY FUNCTIONS
+    // ============================================
+    function saveDb() {
+        try {
+            localStorage.setItem('pkkmb2026_db', JSON.stringify(db));
+        } catch(e) {
+            console.warn('Gagal simpan localStorage:', e);
+            showToast('Storage penuh! Gunakan Base64 Export.', 'warning');
+        }
+    }
     
-    function generateCSRFToken() {
-        db.csrfToken = CryptoJS.lib.WordArray.random(32).toString();
-        return db.csrfToken;
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
     }
     
     function escapeHTML(str) {
@@ -1202,107 +1023,76 @@
     }
     
     async function hashPassword(password) {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(password);
-        const hash = await crypto.subtle.digest('SHA-256', data);
-        return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-    
-    function saveDb() {
         try {
-            localStorage.setItem('pkkmb2026_db', JSON.stringify(db));
-            saveToIndexedDB();
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hash = await crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
         } catch(e) {
-            console.error('Gagal simpan:', e);
-            showToast('Gagal menyimpan data!', 'error');
+            // Fallback simple hash
+            let hash = 0;
+            for (let i = 0; i < password.length; i++) {
+                hash = ((hash << 5) - hash) + password.charCodeAt(i);
+                hash |= 0;
+            }
+            return 'hash_' + Math.abs(hash).toString(16);
         }
     }
     
     function addLog(aksi, modul, detail) {
-        const log = {
+        db.log.unshift({
             timestamp: new Date().toISOString(),
-            aksi: aksi,
-            modul: modul,
-            detail: detail,
-            user: db.currentUser ? db.currentUser.username : 'anonymous',
-            ip: '127.0.0.1',
-            device: navigator.userAgent
-        };
-        db.log.unshift(log);
-        if (db.log.length > 1000) db.log.pop();
+            aksi, modul, detail,
+            user: db.currentUser ? db.currentUser.username : 'anonymous'
+        });
+        if (db.log.length > 500) db.log.pop();
         saveDb();
-        renderLog();
     }
     
     function addToRecycleBin(modul, data) {
-        db.recycleBin.unshift({
-            modul: modul,
-            data: data,
-            deletedAt: new Date().toISOString()
-        });
-        const thirtyDaysAgo = new Date();
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-        db.recycleBin = db.recycleBin.filter(item => new Date(item.deletedAt) > thirtyDaysAgo);
+        db.recycleBin.unshift({ modul, data, deletedAt: new Date().toISOString() });
+        if (db.recycleBin.length > 100) db.recycleBin.pop();
         saveDb();
-        renderRecycleBin();
-    }
-    
-    function showToast(message, type = 'success', withUndo = false, undoFunction = null) {
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        toast.innerHTML = withUndo ? 
-            `<div class="undo-toast">${message} <button class="btn btn-sm btn-outline" onclick="${undoFunction}">Undo</button></div>` : 
-            message;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), withUndo ? 5000 : 3000);
     }
     
     function toggleDarkMode() {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('pkkmb2026_theme', newTheme);
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('pkkmb2026_theme', next);
     }
     
+    // ============================================
+    // NAVIGATION & ACCESS CONTROL
+    // ============================================
     function showSection(id) {
         if (!checkAccess(id)) {
             showToast('Anda tidak memiliki akses!', 'error');
             return;
         }
-        
         const sections = ['dashboard','peserta','kontak','kelompok','anggota','presensi','materi','evaluasi','antikekerasan','sertifikat','log','base64','recyclebin'];
         sections.forEach(s => document.getElementById('section-' + s).classList.add('hidden'));
         document.getElementById('section-' + id).classList.remove('hidden');
         renderAll();
-        if (id === 'dashboard') {
-            updateDashboard();
-            updateChart();
-        }
+        if (id === 'dashboard') updateDashboard();
     }
     
     function checkAccess(section) {
         const user = db.currentUser;
-        if (!user) {
-            showLoginModal();
-            return false;
-        }
-        
-        const role = user.role;
-        if (role === 'admin') return true;
-        if (role === 'panitia') return section !== 'log' && section !== 'base64' && section !== 'recyclebin';
-        if (role === 'mahasiswa') return ['dashboard', 'presensi', 'materi', 'evaluasi', 'antikekerasan', 'sertifikat'].includes(section);
+        if (!user) { showLoginModal(); return false; }
+        if (user.role === 'admin') return true;
+        if (user.role === 'panitia') return !['log','base64','recyclebin'].includes(section);
+        if (user.role === 'mahasiswa') return ['dashboard','presensi','materi','evaluasi','antikekerasan','sertifikat'].includes(section);
         return false;
     }
     
     function applyRoleBasedAccess() {
         const user = db.currentUser;
-        
         document.querySelectorAll('.admin-only').forEach(el => {
-            el.style.display = user && user.role === 'admin' ? 'inline-flex' : 'none';
+            el.style.display = user?.role === 'admin' ? 'inline-flex' : 'none';
         });
-        
         document.querySelectorAll('.admin-panitia-only').forEach(el => {
-            el.style.display = user && (user.role === 'admin' || user.role === 'panitia') ? 'inline-flex' : 'none';
+            el.style.display = (user?.role === 'admin' || user?.role === 'panitia') ? 'inline-flex' : 'none';
         });
         
         const userBadge = document.getElementById('user-badge');
@@ -1312,7 +1102,6 @@
         if (user) {
             userBadge.textContent = `${user.nama} (${user.role})`;
             userBadge.classList.remove('hidden');
-            userBadge.className = `user-badge role-${user.role}`;
             loginBtn.classList.add('hidden');
             logoutBtn.classList.remove('hidden');
         } else {
@@ -1321,45 +1110,17 @@
             logoutBtn.classList.add('hidden');
         }
         
-        const mahasiswaInfo = document.getElementById('mahasiswa-info');
-        if (user && user.role === 'mahasiswa') {
-            mahasiswaInfo.classList.remove('hidden');
-            document.getElementById('mhs-nim').value = user.nim || user.username;
-            document.getElementById('mhs-nama').value = user.nama || user.username;
-            
-            const anggota = db.anggotaKelompok.find(a => a.nim === user.nim);
-            document.getElementById('mhs-kelompok').value = anggota ? (db.kelompok.find(k => k.id === anggota.kelompokId)?.nama || 'Belum ada') : 'Belum ada';
-            
-            const presensi = db.presensi.filter(p => p.nim === user.nim);
-            const hadir = presensi.filter(p => p.status === 'Hadir').length;
-            document.getElementById('mhs-kehadiran').value = `${hadir}/${presensi.length} sesi`;
-        } else {
-            mahasiswaInfo.classList.add('hidden');
-        }
-        
-        if (user && user.role === 'panitia') {
-            document.querySelectorAll('.btn-danger').forEach(btn => {
-                btn.disabled = true;
-                btn.title = 'Tidak memiliki akses hapus';
-            });
-        } else {
-            document.querySelectorAll('.btn-danger').forEach(btn => {
-                btn.disabled = false;
-                btn.title = '';
-            });
-        }
-        
-        if (user && user.role === 'mahasiswa') {
-            ['pres_nim', 'ev_nim', 'ak_nim'].forEach(id => {
+        if (user?.role === 'mahasiswa') {
+            ['pres_nim','ev_nim','ak_nim'].forEach(id => {
                 const input = document.getElementById(id);
-                if (input) {
-                    input.value = user.nim || '';
-                    input.readOnly = true;
-                }
+                if (input) { input.value = user.nim || ''; input.readOnly = true; }
             });
         }
     }
     
+    // ============================================
+    // AUTHENTICATION
+    // ============================================
     function showLoginModal() { document.getElementById('login-modal').style.display = 'block'; }
     function closeLoginModal() { document.getElementById('login-modal').style.display = 'none'; }
     
@@ -1367,13 +1128,9 @@
         const username = sanitizeInput(document.getElementById('login-username').value.trim().toLowerCase());
         const password = document.getElementById('login-password').value;
         
-        if (!username || !password) {
-            showToast('Username dan password wajib diisi!', 'error');
-            return;
-        }
+        if (!username || !password) { showToast('Semua field wajib diisi!', 'error'); return; }
         
         let user = db.users.find(u => u.username.toLowerCase() === username);
-        
         if (!user) {
             user = db.users.find(u => 
                 (u.nim && u.nim.toLowerCase() === username) || 
@@ -1381,36 +1138,27 @@
             );
         }
         
-        if (!user) {
-            showToast('User tidak ditemukan!', 'error');
-            return;
-        }
+        if (!user) { showToast('User tidak ditemukan!', 'error'); return; }
         
-        const hashedPassword = await hashPassword(password);
-        
-        if (user.password === hashedPassword || user.password === password) {
-            db.currentUser = { ...user, loginTime: new Date().toISOString() };
-            generateCSRFToken();
+        const hashed = await hashPassword(password);
+        if (user.password === hashed || user.password === password) {
+            db.currentUser = { ...user, loginTime: Date.now() };
             saveDb();
             closeLoginModal();
             applyRoleBasedAccess();
             showSection('dashboard');
             showToast(`Login berhasil sebagai ${user.role}!`, 'success');
-            addLog('LOGIN', 'AUTH', `${username} berhasil login`);
         } else {
             showToast('Password salah!', 'error');
         }
     }
     
     function logout() {
-        if (confirm('Logout?')) {
-            addLog('LOGOUT', 'AUTH', `${db.currentUser.username} logout`);
-            db.currentUser = null;
-            db.csrfToken = null;
-            saveDb();
-            applyRoleBasedAccess();
-            showLoginModal();
-        }
+        addLog('LOGOUT', 'AUTH', `${db.currentUser?.username} logout`);
+        db.currentUser = null;
+        saveDb();
+        applyRoleBasedAccess();
+        showLoginModal();
     }
     
     function showRegisterModal() { document.getElementById('register-modal').style.display = 'block'; }
@@ -1421,25 +1169,21 @@
         const nama = sanitizeInput(document.getElementById('reg-nama').value.trim());
         const tanggalLahir = document.getElementById('reg-tanggal-lahir').value;
         const password = document.getElementById('reg-password').value;
-        const confirmPassword = document.getElementById('reg-password-confirm').value;
+        const confirm = document.getElementById('reg-password-confirm').value;
         
-        if (!nim || !nama || !tanggalLahir || !password || !confirmPassword) {
-            showToast('Semua field wajib diisi!', 'error');
-            return;
-        }
-        
+        if (!nim || !nama || !tanggalLahir || !password || !confirm) { showToast('Semua field wajib diisi!', 'error'); return; }
         if (password.length < 6) { showToast('Password minimal 6 karakter!', 'error'); return; }
-        if (password !== confirmPassword) { showToast('Password konfirmasi tidak sama!', 'error'); return; }
-        
+        if (password !== confirm) { showToast('Password tidak sama!', 'error'); return; }
         if (!db.peserta.find(p => p.nim === nim)) { showToast('NIM tidak terdaftar!', 'error'); return; }
         if (db.users.some(u => u.username === nim)) { showToast('NIM sudah terdaftar!', 'error'); return; }
         
-        const hashedPassword = await hashPassword(password);
-        db.users.push({ username: nim, password: hashedPassword, role: 'mahasiswa', nama, nim, tanggalLahir });
+        db.users.push({
+            username: nim, password: await hashPassword(password),
+            role: 'mahasiswa', nama, nim, tanggalLahir
+        });
         saveDb();
         closeRegisterModal();
         showToast('Registrasi berhasil!', 'success');
-        addLog('REGISTER', 'AUTH', `Mahasiswa ${nim} registrasi`);
         queueSync();
     }
     
@@ -1451,7 +1195,6 @@
         const newPassword = document.getElementById('reset-password').value;
         
         if (!username || !newPassword) { showToast('Semua field wajib diisi!', 'error'); return; }
-        if (newPassword.length < 6) { showToast('Password minimal 6 karakter!', 'error'); return; }
         
         const user = db.users.find(u => u.username === username || u.nim === username);
         if (!user) { showToast('User tidak ditemukan!', 'error'); return; }
@@ -1462,41 +1205,9 @@
         showToast('Password direset!', 'success');
     }
     
-    function showUserManagement() {
-        renderUserManagement();
-        document.getElementById('user-management-modal').style.display = 'block';
-    }
-    function closeUserManagement() { document.getElementById('user-management-modal').style.display = 'none'; }
-    
-    function renderUserManagement() {
-        const tbody = document.querySelector('#tabel-users tbody');
-        tbody.innerHTML = db.users.map(u => 
-            `<tr><td>${escapeHTML(u.username)}</td><td>${escapeHTML(u.nama)}</td><td>${escapeHTML(u.role)}</td>
-            <td><button class="btn btn-sm btn-danger" onclick="deleteUser('${escapeHTML(u.username)}')">🗑️</button></td></tr>`
-        ).join('');
-    }
-    
-    function deleteUser(username) {
-        if (confirm(`Hapus user ${username}?`)) {
-            db.users = db.users.filter(u => u.username !== username);
-            saveDb();
-            renderUserManagement();
-            queueSync();
-        }
-    }
-    
-    function checkSession() {
-        if (db.currentUser && db.currentUser.loginTime) {
-            if (new Date().getTime() - new Date(db.currentUser.loginTime).getTime() > SESSION_TIMEOUT) {
-                db.currentUser = null;
-                saveDb();
-                applyRoleBasedAccess();
-                showLoginModal();
-                showToast('Session expired', 'warning');
-            }
-        }
-    }
-    
+    // ============================================
+    // IMPORT/EXPORT
+    // ============================================
     function showImportModal() { document.getElementById('import-modal').style.display = 'block'; }
     function closeImportModal() { document.getElementById('import-modal').style.display = 'none'; }
     
@@ -1504,41 +1215,29 @@
         const file = event.target.files[0];
         if (!file) return;
         
-        const progressContainer = document.getElementById('import-progress');
-        const progressFill = document.getElementById('import-progress-fill');
-        progressContainer.classList.remove('hidden');
-        
         const reader = new FileReader();
-        reader.onprogress = function(e) {
-            if (e.lengthComputable) progressFill.style.width = ((e.loaded / e.total) * 100) + '%';
-        };
-        
         reader.onload = function(e) {
             const lines = e.target.result.split('\n');
             let imported = 0;
-            
             for (let i = 1; i < lines.length; i++) {
                 const [nim, nama, fakultas, prodi] = lines[i].split(',');
-                if (nim && nama && !db.peserta.some(p => p.nim === nim.trim())) {
+                if (nim?.trim() && nama?.trim() && !db.peserta.some(p => p.nim === nim.trim())) {
                     db.peserta.push({
                         id: 'AUTO-2026-' + (db.peserta.length + 1),
                         nim: nim.trim(), nama: nama.trim(),
                         fakultas: fakultas?.trim() || '', prodi: prodi?.trim() || '',
                         jenjang: 'S1', tahun: '2026/2027', status: 'Mahasiswa baru',
-                        asal_sekolah: '', jenis_sekolah: 'SMA', jurusan: '', kota_sekolah: '', tahun_lulus: ''
+                        asal_sekolah: '', jenis_sekolah: 'SMA'
                     });
                     imported++;
                 }
             }
-            
             saveDb();
             renderPeserta();
             closeImportModal();
-            progressContainer.classList.add('hidden');
             showToast(`Import ${imported} peserta!`, 'success');
             queueSync();
         };
-        
         reader.readAsText(file);
     }
     
@@ -1552,155 +1251,97 @@
         a.click();
     }
     
-    function exportPesertaPDF() {
-        html2pdf().from(document.getElementById('tabel-peserta')).save('peserta.pdf');
+    function eksporBase64() {
+        document.getElementById('base64-output').innerText = 
+            btoa(unescape(encodeURIComponent(JSON.stringify(db))));
+        showToast('Base64 berhasil!', 'success');
     }
     
-    function exportPresensiCSV() {
-        let csv = 'NIM,Tanggal,Hari,Sesi,Status\n';
-        db.presensi.forEach(p => csv += `${p.nim},${p.tanggal},${p.hari},${p.sesi},${p.status}\n`);
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'presensi.csv';
-        a.click();
+    function imporBase64() {
+        const b64 = document.getElementById('base64-input').value.trim();
+        if (!b64) { showToast('Tempel Base64!', 'error'); return; }
+        try {
+            db = JSON.parse(decodeURIComponent(escape(atob(b64))));
+            saveDb(); renderAll();
+            showToast('Import berhasil!', 'success');
+        } catch(e) { showToast('Gagal import!', 'error'); }
     }
     
-    function exportLogCSV() {
-        let csv = 'Timestamp,Aksi,Modul,Detail,User\n';
-        db.log.forEach(l => csv += `${l.timestamp},${l.aksi},${l.modul},${l.detail},${l.user}\n`);
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'log.csv';
-        a.click();
+    function backupData() {
+        localStorage.setItem('pkkmb2026_backup', JSON.stringify(db));
+        showToast('Backup berhasil!', 'success');
     }
     
+    function restoreBackup() {
+        const backup = localStorage.getItem('pkkmb2026_backup');
+        if (!backup) { showToast('Tidak ada backup!', 'error'); return; }
+        if (confirm('Restore data?')) {
+            db = JSON.parse(backup);
+            saveDb(); renderAll();
+            showToast('Restore berhasil!', 'success');
+        }
+    }
+    
+    function resetData() {
+        if (confirm('Reset semua data?')) {
+            db = {
+                peserta: [], kontak: [], kelompok: [], anggotaKelompok: [],
+                materi: [], presensi: [], evaluasi: [], sertifikat: [],
+                antikekerasan: [], log: [], recycleBin: [], users: db.users,
+                currentUser: null, selectedPeserta: [], csrfToken: null
+            };
+            saveDb(); renderAll();
+            showToast('Data direset!', 'success');
+        }
+    }
+    
+    // ============================================
+    // QR CODE (Simple Implementation)
+    // ============================================
     function generateQRCode() {
         const nim = document.getElementById('ser_nim').value;
         const sertifikat = db.sertifikat.find(s => s.nim === nim);
         if (!sertifikat) { showToast('Sertifikat tidak ditemukan!', 'error'); return; }
         
-        document.getElementById('qr-code').innerHTML = '';
-        new QRCode(document.getElementById('qr-code'), {
-            text: JSON.stringify({ nim: sertifikat.nim, nomor: sertifikat.nomor, status: sertifikat.status }),
-            width: 200, height: 200
-        });
+        const qrData = JSON.stringify({ nim: sertifikat.nim, nomor: sertifikat.nomor, status: sertifikat.status });
+        
+        // Simple QR display (tanpa library eksternal)
+        const qrContainer = document.getElementById('qr-code');
+        qrContainer.innerHTML = `
+            <div style="text-align:center;padding:20px;">
+                <div style="font-size:4rem;margin-bottom:10px;">🔳</div>
+                <p style="font-weight:bold;">QR Code Data:</p>
+                <p style="font-size:0.7rem;word-break:break-all;max-width:300px;">${escapeHTML(qrData)}</p>
+                <p style="margin-top:10px;font-size:0.8rem;color:var(--text-light);">
+                    Untuk QR code lengkap, gunakan library QRCode.js
+                </p>
+            </div>
+        `;
         document.getElementById('qr-modal').style.display = 'block';
-    }
-    
-    function showQRCode(nim) {
-        const sertifikat = db.sertifikat.find(s => s.nim === nim);
-        if (!sertifikat) return;
-        document.getElementById('ser_nim').value = nim;
-        generateQRCode();
     }
     
     function closeQRModal() { document.getElementById('qr-modal').style.display = 'none'; }
     
-    function printSertifikat() {
-        const nim = document.getElementById('ser_nim').value;
-        const sertifikat = db.sertifikat.find(s => s.nim === nim);
-        const peserta = db.peserta.find(p => p.nim === nim);
-        if (!sertifikat || !peserta) { showToast('Data tidak ditemukan!', 'error'); return; }
-        
-        document.getElementById('sertifikat-nama').textContent = peserta.nama;
-        document.getElementById('sertifikat-nim').textContent = sertifikat.nim;
-        document.getElementById('sertifikat-status').textContent = sertifikat.status;
-        document.getElementById('sertifikat-persentase').textContent = `Kehadiran: ${sertifikat.persentase}`;
-        document.getElementById('sertifikat-preview').classList.remove('hidden');
-        window.print();
-    }
-    
-    function exportSertifikatPDF() {
-        html2pdf().from(document.getElementById('sertifikat-preview')).save('sertifikat.pdf');
-    }
-    
-    function backupData() {
-        const encrypted = CryptoJS.AES.encrypt(JSON.stringify(db), ENCRYPTION_KEY).toString();
-        localStorage.setItem('pkkmb2026_backup', encrypted);
-        showToast('Backup berhasil!', 'success');
-    }
-    
-    function restoreBackup() {
-        const encrypted = localStorage.getItem('pkkmb2026_backup');
-        if (!encrypted) { showToast('Tidak ada backup!', 'error'); return; }
-        
-        if (confirm('Restore data?')) {
-            try {
-                db = JSON.parse(CryptoJS.AES.decrypt(encrypted, ENCRYPTION_KEY).toString(CryptoJS.enc.Utf8));
-                saveDb();
-                renderAll();
-                showToast('Restore berhasil!', 'success');
-            } catch(e) { showToast('Gagal restore!', 'error'); }
-        }
-    }
-    
-    function compressData() {
-        document.getElementById('base64-output').innerText = 
-            CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(JSON.stringify(db)));
-        showToast('Data dikompres!', 'success');
-    }
-    
-    function startAutoBackup() {
-        autoBackupInterval = setInterval(() => {
-            localStorage.setItem('pkkmb2026_autobackup', 
-                CryptoJS.AES.encrypt(JSON.stringify(db), ENCRYPTION_KEY).toString());
-            saveToIndexedDB();
-        }, 300000);
-    }
-    
-    function setSesi(hari, sesi) {
-        currentSession = { hari, sesi };
-        document.getElementById('pres_hari').value = hari;
-        document.getElementById('pres_sesi').value = sesi;
-        document.querySelectorAll('.session-tab').forEach(tab => tab.classList.remove('active'));
-        event.target.classList.add('active');
-    }
-    
-    function toggleAlasan() {
-        const status = document.getElementById('pres_status').value;
-        document.getElementById('alasan-group').classList.toggle('hidden', status !== 'Tidak Hadir');
-        document.getElementById('keterangan-group').classList.toggle('hidden', status !== 'Tidak Hadir');
-        document.getElementById('mode-group').classList.toggle('hidden', status === 'Tidak Hadir');
-    }
-    
-    function validateNIM(nim) {
-        if (!nim?.trim()) { showToast('NIM wajib diisi!', 'error'); return false; }
-        return true;
-    }
-    
-    function validateEmail(email) {
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Email tidak valid!', 'error'); return false; }
-        return true;
-    }
-    
-    function validateWhatsApp(wa) {
-        if (!/^(\+62|62|0)8[1-9][0-9]{6,10}$/.test(wa.replace(/[\s-]/g, ''))) { 
-            showToast('WhatsApp tidak valid!', 'error'); return false; 
-        }
-        return true;
-    }
-    
+    // ============================================
+    // CRUD FUNCTIONS
+    // ============================================
     function simpanPeserta() {
         const nim = sanitizeInput(document.getElementById('p_nim').value.trim());
         const nama = sanitizeInput(document.getElementById('p_nama').value.trim());
         const fakultas = sanitizeInput(document.getElementById('p_fakultas').value.trim());
         const prodi = sanitizeInput(document.getElementById('p_prodi').value.trim());
         
-        if (!validateNIM(nim) || !nama || !fakultas || !prodi) { showToast('Field wajib diisi!', 'error'); return; }
+        if (!nim || !nama || !fakultas || !prodi) { showToast('Field wajib diisi!', 'error'); return; }
         if (db.peserta.some(p => p.nim === nim)) { showToast('NIM sudah terdaftar!', 'error'); return; }
         
         db.peserta.push({
-            id: 'AUTO-2026-' + (db.peserta.length + 1), nim, nama, fakultas, prodi,
+            id: 'AUTO-2026-' + (db.peserta.length + 1),
+            nim, nama, fakultas, prodi,
             jenjang: document.getElementById('p_jenjang').value,
             tahun: document.getElementById('p_tahun').value,
             status: document.getElementById('p_status').value,
-            asal_sekolah: sanitizeInput(document.getElementById('p_sekolah').value),
-            jenis_sekolah: document.getElementById('p_jenis_sekolah').value,
-            jurusan: sanitizeInput(document.getElementById('p_jurusan').value),
-            kota_sekolah: sanitizeInput(document.getElementById('p_kota_sekolah').value),
-            tahun_lulus: sanitizeInput(document.getElementById('p_tahun_lulus').value)
+            asal_sekolah: document.getElementById('p_sekolah').value,
+            jenis_sekolah: document.getElementById('p_jenis_sekolah').value
         });
         saveDb();
         addLog('CREATE', 'PESERTA', `NIM: ${nim}`);
@@ -1711,8 +1352,7 @@
     }
     
     function clearPesertaForm() {
-        ['p_nim','p_nama','p_fakultas','p_prodi','p_sekolah','p_jurusan','p_kota_sekolah','p_tahun_lulus']
-            .forEach(id => document.getElementById(id).value = '');
+        ['p_nim','p_nama','p_fakultas','p_prodi','p_sekolah'].forEach(id => document.getElementById(id).value = '');
     }
     
     function simpanKontak() {
@@ -1720,14 +1360,9 @@
         const email = sanitizeInput(document.getElementById('k_email').value.trim());
         const wa = sanitizeInput(document.getElementById('k_wa').value.trim());
         
-        if (!validateNIM(nim) || !validateEmail(email) || !validateWhatsApp(wa)) return;
+        if (!nim || !email || !wa) { showToast('Field wajib diisi!', 'error'); return; }
         
-        db.kontak.push({
-            nim, wa, email,
-            alamat: sanitizeInput(document.getElementById('k_alamat').value),
-            kota: sanitizeInput(document.getElementById('k_kota').value),
-            provinsi: sanitizeInput(document.getElementById('k_provinsi').value)
-        });
+        db.kontak.push({ nim, wa, email, kota: document.getElementById('k_kota').value });
         saveDb();
         renderKontak();
         showToast('Kontak tersimpan!', 'success');
@@ -1739,15 +1374,11 @@
         if (!id) { showToast('ID wajib diisi!', 'error'); return; }
         
         db.kelompok.push({
-            id,
-            nomor: sanitizeInput(document.getElementById('kel_nomor').value),
-            nama: sanitizeInput(document.getElementById('kel_nama').value),
-            fakultas: sanitizeInput(document.getElementById('kel_fakultas').value),
-            prodi: sanitizeInput(document.getElementById('kel_prodi').value),
-            pendamping: sanitizeInput(document.getElementById('kel_pendamping').value),
-            koordinator: sanitizeInput(document.getElementById('kel_koordinator').value),
-            ruangan: sanitizeInput(document.getElementById('kel_ruangan').value),
-            lokasi: sanitizeInput(document.getElementById('kel_lokasi').value)
+            id, nomor: document.getElementById('kel_nomor').value,
+            nama: document.getElementById('kel_nama').value,
+            pendamping: document.getElementById('kel_pendamping').value,
+            ruangan: document.getElementById('kel_ruangan').value,
+            lokasi: document.getElementById('kel_lokasi').value
         });
         saveDb();
         renderKelompok();
@@ -1764,7 +1395,7 @@
         
         db.anggotaKelompok.push({
             nim, nama, kelompokId,
-            pendamping: sanitizeInput(document.getElementById('ag_pendamping').value),
+            pendamping: document.getElementById('ag_pendamping').value,
             timestamp: new Date().toISOString()
         });
         saveDb();
@@ -1775,14 +1406,9 @@
     
     function simpanPresensi() {
         const nim = sanitizeInput(document.getElementById('pres_nim').value.trim());
-        if (!validateNIM(nim)) return;
+        if (!nim) { showToast('NIM wajib diisi!', 'error'); return; }
         
         const status = document.getElementById('pres_status').value;
-        if (db.presensi.some(p => p.nim === nim && p.hari === currentSession.hari && p.sesi === currentSession.sesi)) {
-            showToast('Presensi sudah ada!', 'error');
-            return;
-        }
-        
         db.presensi.push({
             nim,
             tanggal: document.getElementById('pres_tanggal').value || new Date().toISOString().split('T')[0],
@@ -1791,7 +1417,7 @@
             status,
             mode: status === 'Hadir' ? document.getElementById('pres_mode').value : '-',
             alasan: status === 'Tidak Hadir' ? document.getElementById('pres_alasan').value : '-',
-            keterangan: status === 'Tidak Hadir' ? sanitizeInput(document.getElementById('pres_keterangan').value) : '',
+            keterangan: status === 'Tidak Hadir' ? document.getElementById('pres_keterangan').value : '',
             jam: new Date().toLocaleTimeString(),
             timestamp: new Date().toISOString(),
             operator: db.currentUser?.username || 'sistem'
@@ -1807,15 +1433,12 @@
         if (!nama) { showToast('Nama materi wajib diisi!', 'error'); return; }
         
         db.materi.push({
-            id: sanitizeInput(document.getElementById('mat_id').value),
-            kode: sanitizeInput(document.getElementById('mat_kode').value),
+            id: document.getElementById('mat_id').value,
+            kode: document.getElementById('mat_kode').value,
             nama,
-            narasumber: sanitizeInput(document.getElementById('mat_narasumber').value),
+            narasumber: document.getElementById('mat_narasumber').value,
             tanggal: document.getElementById('mat_tanggal').value,
-            jam_mulai: document.getElementById('mat_jam_mulai').value,
-            jam_selesai: document.getElementById('mat_jam_selesai').value,
-            metode: sanitizeInput(document.getElementById('mat_metode').value),
-            lokasi: sanitizeInput(document.getElementById('mat_lokasi').value)
+            lokasi: document.getElementById('mat_lokasi').value
         });
         saveDb();
         renderMateri();
@@ -1825,17 +1448,14 @@
     
     function simpanEvaluasi() {
         const nim = sanitizeInput(document.getElementById('ev_nim').value.trim());
-        if (!validateNIM(nim)) return;
+        if (!nim) { showToast('NIM wajib diisi!', 'error'); return; }
         
         db.evaluasi.push({
             nim,
             materi: document.getElementById('ev_materi').value,
             narasumber: document.getElementById('ev_narasumber').value,
             panitia: document.getElementById('ev_panitia').value,
-            fasilitas: document.getElementById('ev_fasilitas').value,
-            keamanan: document.getElementById('ev_keamanan').value,
-            manfaat: document.getElementById('ev_manfaat').value,
-            saran: sanitizeInput(document.getElementById('ev_saran').value),
+            saran: document.getElementById('ev_saran').value,
             timestamp: new Date().toISOString()
         });
         saveDb();
@@ -1846,13 +1466,13 @@
     
     function simpanSertifikat() {
         const nim = sanitizeInput(document.getElementById('ser_nim').value.trim());
-        if (!validateNIM(nim)) return;
+        if (!nim) { showToast('NIM wajib diisi!', 'error'); return; }
         
         db.sertifikat.push({
             nim,
-            nomor: sanitizeInput(document.getElementById('ser_nomor').value),
+            nomor: document.getElementById('ser_nomor').value,
             status: document.getElementById('ser_status').value,
-            persentase: sanitizeInput(document.getElementById('ser_persentase').value),
+            persentase: document.getElementById('ser_persentase').value,
             tanggal: document.getElementById('ser_tanggal').value
         });
         saveDb();
@@ -1863,7 +1483,7 @@
     
     function simpanPernyataan() {
         const nim = sanitizeInput(document.getElementById('ak_nim').value.trim());
-        if (!validateNIM(nim)) return;
+        if (!nim) { showToast('NIM wajib diisi!', 'error'); return; }
         
         db.antikekerasan.push({
             nim,
@@ -1898,95 +1518,16 @@
         alert(`Rekap ${nim}:\nTotal: ${presensi.length}\nHadir: ${hadir}\nPersentase: ${persentase}%`);
     }
     
-    function updateDashboard() {
-        document.getElementById('stat-peserta').textContent = db.peserta.length;
-        document.getElementById('stat-presensi').textContent = db.presensi.length;
-        document.getElementById('stat-hadir').textContent = db.presensi.filter(p => p.status === 'Hadir').length;
-        document.getElementById('stat-materi').textContent = db.materi.length;
-        document.getElementById('stat-kelompok').textContent = db.kelompok.length;
-        
-        const today = new Date().toISOString().split('T')[0];
-        const todayPresensi = db.presensi.filter(p => p.tanggal === today);
-        document.getElementById('kehadiran-hari-ini').innerHTML = 
-            todayPresensi.length ? `<p>Total: ${todayPresensi.length} | Hadir: ${todayPresensi.filter(p => p.status === 'Hadir').length}</p>` : 
-            '<p>Belum ada presensi</p>';
-        
-        const memenuhi = db.sertifikat.filter(s => s.status === 'MEMENUHI SYARAT').length;
-        document.getElementById('status-sertifikat').innerHTML = `<p>🟢 Memenuhi: ${memenuhi} | 🔴 Belum: ${db.sertifikat.length - memenuhi}</p>`;
-    }
-    
-    function updateChart() {
-        const ctx = document.getElementById('kehadiranChart').getContext('2d');
-        const hadir = db.presensi.filter(p => p.status === 'Hadir').length;
-        const tidakHadir = db.presensi.filter(p => p.status === 'Tidak Hadir').length;
-        
-        if (kehadiranChart) kehadiranChart.destroy();
-        kehadiranChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: { labels: ['Hadir', 'Tidak Hadir'], datasets: [{ data: [hadir, tidakHadir], backgroundColor: ['#4caf50', '#f44336'] }] },
-            options: { responsive: true, maintainAspectRatio: false }
-        });
-    }
-    
-    function updateFakultasFilter() {
-        const select = document.getElementById('filter-fakultas');
-        const fakultas = [...new Set(db.peserta.map(p => p.fakultas))];
-        select.innerHTML = '<option value="">Semua Fakultas</option>' + 
-            fakultas.map(f => `<option value="${f}">${f}</option>`).join('');
-    }
-    
-    function updateKelompokOptions() {
-        const select = document.getElementById('ag_kelompok');
-        select.innerHTML = db.kelompok.map(k => `<option value="${k.id}">${k.nama || k.id}</option>`).join('');
-    }
-    
-    function filterPeserta() { renderPeserta(); }
-    function filterPresensi() { renderPresensi(); }
-    
-    function toggleAllPeserta() {
-        const checkAll = document.getElementById('check-all-peserta').checked;
-        document.querySelectorAll('#tabel-peserta tbody input[type="checkbox"]').forEach(cb => cb.checked = checkAll);
-        updateSelectedPeserta();
-    }
-    
-    function updateSelectedPeserta() {
-        db.selectedPeserta = [...document.querySelectorAll('#tabel-peserta tbody input[type="checkbox"]:checked')].map(cb => cb.value);
-    }
-    
-    function selectAllPeserta() {
-        document.querySelectorAll('#tabel-peserta tbody input[type="checkbox"]').forEach(cb => cb.checked = true);
-        updateSelectedPeserta();
-    }
-    
-    function bulkDeletePeserta() {
-        if (!db.selectedPeserta.length) { showToast('Pilih peserta!', 'error'); return; }
-        if (confirm(`Hapus ${db.selectedPeserta.length} peserta?`)) {
-            db.selectedPeserta.forEach(nim => {
-                const p = db.peserta.find(p => p.nim === nim);
-                if (p) addToRecycleBin('PESERTA', p);
-            });
-            db.peserta = db.peserta.filter(p => !db.selectedPeserta.includes(p.nim));
-            db.selectedPeserta = [];
-            saveDb();
-            renderPeserta();
-            queueSync();
-        }
-    }
-    
+    // ============================================
+    // RENDER FUNCTIONS
+    // ============================================
     function renderPeserta() {
         const search = document.getElementById('search-peserta').value.toLowerCase();
-        const fakultas = document.getElementById('filter-fakultas').value;
-        const status = document.getElementById('filter-status').value;
-        
         let filtered = db.peserta;
         if (search) filtered = filtered.filter(p => p.nim.toLowerCase().includes(search) || p.nama.toLowerCase().includes(search));
-        if (fakultas) filtered = filtered.filter(p => p.fakultas === fakultas);
-        if (status) filtered = filtered.filter(p => p.status === status);
         
-        const tbody = document.querySelector('#tabel-peserta tbody');
-        tbody.innerHTML = filtered.map(p => 
-            `<tr><td class="checkbox-cell"><input type="checkbox" value="${escapeHTML(p.nim)}" onchange="updateSelectedPeserta()"></td>
-            <td>${escapeHTML(p.nim)}</td><td>${escapeHTML(p.nama)}</td><td>${escapeHTML(p.fakultas)}</td>
+        document.querySelector('#tabel-peserta tbody').innerHTML = filtered.map(p => 
+            `<tr><td>${escapeHTML(p.nim)}</td><td>${escapeHTML(p.nama)}</td><td>${escapeHTML(p.fakultas)}</td>
             <td>${escapeHTML(p.prodi)}</td><td>${escapeHTML(p.status)}</td>
             <td><button class="btn btn-sm btn-danger" onclick="hapusPeserta('${escapeHTML(p.nim)}')">🗑️</button></td></tr>`
         ).join('');
@@ -2004,6 +1545,7 @@
             `<tr><td>${escapeHTML(k.nomor)}</td><td>${escapeHTML(k.nama)}</td><td>${escapeHTML(k.pendamping)}</td>
             <td>${escapeHTML(k.ruangan)}</td><td><button class="btn btn-sm btn-danger" onclick="hapusKelompok('${escapeHTML(k.id)}')">🗑️</button></td></tr>`
         ).join('');
+        updateKelompokOptions();
     }
     
     function renderAnggota() {
@@ -2015,16 +1557,7 @@
     }
     
     function renderPresensi() {
-        const tanggal = document.getElementById('filter-presensi-tanggal').value;
-        const hari = document.getElementById('filter-presensi-hari').value;
-        const status = document.getElementById('filter-presensi-status').value;
-        
-        let filtered = db.presensi;
-        if (tanggal) filtered = filtered.filter(p => p.tanggal === tanggal);
-        if (hari) filtered = filtered.filter(p => p.hari === hari);
-        if (status) filtered = filtered.filter(p => p.status === status);
-        
-        document.querySelector('#tabel-presensi tbody').innerHTML = filtered.map(p => 
+        document.querySelector('#tabel-presensi tbody').innerHTML = db.presensi.map(p => 
             `<tr><td>${escapeHTML(p.nim)}</td><td>${escapeHTML(p.tanggal)}</td><td>${escapeHTML(p.hari)}</td>
             <td>${escapeHTML(p.sesi)}</td><td class="${p.status === 'Hadir' ? 'status-hadir' : 'status-tidak'}">${p.status}</td>
             <td>${escapeHTML(p.mode)}</td><td>${escapeHTML(p.alasan)}</td>
@@ -2042,7 +1575,7 @@
     function renderEvaluasi() {
         document.querySelector('#tabel-evaluasi tbody').innerHTML = db.evaluasi.map(e => 
             `<tr><td>${escapeHTML(e.nim)}</td><td>${escapeHTML(e.materi)}</td><td>${escapeHTML(e.narasumber)}</td>
-            <td>${escapeHTML(e.panitia)}</td><td>${escapeHTML(e.manfaat)}</td>
+            <td>${escapeHTML(e.panitia)}</td><td>-</td>
             <td><button class="btn btn-sm btn-danger" onclick="hapusEvaluasi('${escapeHTML(e.nim)}')">🗑️</button></td></tr>`
         ).join('');
     }
@@ -2083,6 +1616,9 @@
         renderAntikekerasan(); renderLog(); renderRecycleBin();
     }
     
+    // ============================================
+    // DELETE FUNCTIONS
+    // ============================================
     function hapusPeserta(nim) {
         if (confirm(`Hapus ${nim}?`)) {
             const p = db.peserta.find(p => p.nim === nim);
@@ -2122,89 +1658,56 @@
         if (confirm('Kosongkan?')) { db.recycleBin = []; saveDb(); renderRecycleBin(); }
     }
     
-    function eksporBase64() {
-        document.getElementById('base64-output').innerText = btoa(unescape(encodeURIComponent(JSON.stringify(db))));
-        showToast('Base64 berhasil!', 'success');
+    // ============================================
+    // UPDATE FUNCTIONS
+    // ============================================
+    function updateDashboard() {
+        document.getElementById('stat-peserta').textContent = db.peserta.length;
+        document.getElementById('stat-presensi').textContent = db.presensi.length;
+        document.getElementById('stat-hadir').textContent = db.presensi.filter(p => p.status === 'Hadir').length;
+        document.getElementById('stat-materi').textContent = db.materi.length;
+        document.getElementById('stat-kelompok').textContent = db.kelompok.length;
+        
+        const today = new Date().toISOString().split('T')[0];
+        const todayPresensi = db.presensi.filter(p => p.tanggal === today);
+        document.getElementById('kehadiran-hari-ini').innerHTML = 
+            todayPresensi.length ? `<p>Total: ${todayPresensi.length} | Hadir: ${todayPresensi.filter(p => p.status === 'Hadir').length}</p>` : 
+            '<p>Belum ada presensi</p>';
+        
+        const memenuhi = db.sertifikat.filter(s => s.status === 'MEMENUHI SYARAT').length;
+        document.getElementById('status-sertifikat').innerHTML = `<p>🟢 Memenuhi: ${memenuhi} | 🔴 Belum: ${db.sertifikat.length - memenuhi}</p>`;
     }
     
-    function imporBase64() {
-        const b64 = document.getElementById('base64-input').value.trim();
-        if (!b64) { showToast('Tempel Base64!', 'error'); return; }
-        try {
-            db = JSON.parse(decodeURIComponent(escape(atob(b64))));
-            saveDb(); renderAll(); showToast('Import berhasil!', 'success');
-        } catch(e) { showToast('Gagal import!', 'error'); }
+    function updateKelompokOptions() {
+        const select = document.getElementById('ag_kelompok');
+        select.innerHTML = db.kelompok.map(k => `<option value="${k.id}">${k.nama || k.id}</option>`).join('');
     }
     
-    function eksporJSON() {
-        document.getElementById('base64-output').innerText = JSON.stringify(db, null, 2);
-        showToast('JSON berhasil!', 'success');
+    function filterPeserta() { renderPeserta(); }
+    
+    function setSesi(hari, sesi) {
+        currentSession = { hari, sesi };
+        document.getElementById('pres_hari').value = hari;
+        document.getElementById('pres_sesi').value = sesi;
+        document.querySelectorAll('.session-tab').forEach(tab => tab.classList.remove('active'));
+        event.target.classList.add('active');
     }
     
-    function imporJSON() {
-        const json = document.getElementById('base64-input').value.trim();
-        if (!json) { showToast('Tempel JSON!', 'error'); return; }
-        try {
-            db = JSON.parse(json);
-            saveDb(); renderAll(); showToast('Import berhasil!', 'success');
-        } catch(e) { showToast('Gagal import!', 'error'); }
+    function toggleAlasan() {
+        const status = document.getElementById('pres_status').value;
+        document.getElementById('alasan-group').classList.toggle('hidden', status !== 'Tidak Hadir');
+        document.getElementById('keterangan-group').classList.toggle('hidden', status !== 'Tidak Hadir');
+        document.getElementById('mode-group').classList.toggle('hidden', status === 'Tidak Hadir');
     }
     
-    function resetData() {
-        if (confirm('Reset semua?')) {
-            db = { peserta: [], kontak: [], kelompok: [], anggotaKelompok: [], materi: [], presensi: [], 
-                   evaluasi: [], sertifikat: [], antikekerasan: [], log: [], recycleBin: [], users: db.users, 
-                   currentUser: db.currentUser, selectedPeserta: [], csrfToken: db.csrfToken };
-            saveDb(); renderAll(); showToast('Data direset!', 'success');
-        }
+    function showQRCode(nim) {
+        document.getElementById('ser_nim').value = nim;
+        generateQRCode();
     }
     
-    // ============ GOOGLE APPS SCRIPT INTEGRATION ============
-    
-    async function fetchWithRetry(url, options, retries = MAX_RETRIES) {
-        for (let i = 0; i < retries; i++) {
-            try {
-                const response = await fetch(url, options);
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                return await response.json();
-            } catch (error) {
-                if (i === retries - 1) throw error;
-                await new Promise(resolve => setTimeout(resolve, RETRY_DELAY * (i + 1)));
-            }
-        }
-    }
-    
-    async function testConnection() {
-        try {
-            const status = document.getElementById('connection-status');
-            status.innerHTML = '🔄 Testing...';
-            
-            const result = await fetchWithRetry(GAS_URL + '?action=testConnection', {
-                method: 'GET',
-                headers: { 'Accept': 'application/json' }
-            });
-            
-            if (result.status === 200) {
-                status.innerHTML = '✅ Connected';
-                status.style.background = '#e8f5e9';
-                status.style.color = '#1b5e20';
-                document.getElementById('security-status').textContent = '🔒 SECURE';
-                document.getElementById('security-status').className = 'security-badge security-high';
-                showToast('Koneksi berhasil!', 'success');
-            } else {
-                throw new Error('Invalid response');
-            }
-        } catch(e) {
-            const status = document.getElementById('connection-status');
-            status.innerHTML = '❌ Failed';
-            status.style.background = '#ffebee';
-            status.style.color = '#b71c1c';
-            document.getElementById('security-status').textContent = '⚠️ OFFLINE';
-            document.getElementById('security-status').className = 'security-badge security-low';
-            showToast('Gagal koneksi: ' + e.message, 'error');
-        }
-    }
-    
+    // ============================================
+    // SYNC FUNCTIONS
+    // ============================================
     function queueSync() {
         if (!isOnline) {
             syncQueue.push({ timestamp: Date.now(), data: db });
@@ -2212,114 +1715,85 @@
             showToast('Data diantrekan untuk sync', 'warning');
             return;
         }
-        processSyncQueue();
-    }
-    
-    async function processSyncQueue() {
-        if (isSyncing || !isOnline) return;
-        isSyncing = true;
-        
-        try {
-            // Load queue dari localStorage
-            const savedQueue = localStorage.getItem('pkkmb2026_sync_queue');
-            if (savedQueue) {
-                syncQueue = JSON.parse(savedQueue);
-            }
-            
-            // Sync data terbaru
-            await syncWithCloud();
-            
-            // Clear queue
-            syncQueue = [];
-            localStorage.removeItem('pkkmb2026_sync_queue');
-            showToast('Sync selesai!', 'success');
-        } catch(e) {
-            showToast('Sync gagal, akan dicoba lagi', 'error');
-        } finally {
-            isSyncing = false;
-        }
+        syncWithCloud();
     }
     
     async function syncWithCloud() {
-        if (!db.currentUser || db.currentUser.role !== 'admin') {
-            showToast('Hanya admin yang bisa sync!', 'error');
-            return;
-        }
-        
         try {
-            const status = document.getElementById('connection-status');
-            status.innerHTML = '🔄 Syncing...';
-            
-            const result = await fetchWithRetry(GAS_URL, {
+            const response = await fetch(GAS_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    action: 'saveAll',
-                    data: db
-                })
+                body: JSON.stringify({ action: 'saveAll', data: db })
             });
             
+            const result = await response.json();
             if (result.status === 200) {
-                status.innerHTML = '✅ Connected';
-                status.style.background = '#e8f5e9';
-                status.style.color = '#1b5e20';
+                document.getElementById('connection-status').innerHTML = '✅ Connected';
                 showToast('Sync berhasil!', 'success');
-            } else {
-                throw new Error(result.data?.error || 'Sync failed');
             }
         } catch(e) {
-            const status = document.getElementById('connection-status');
-            status.innerHTML = '⚠️ Local Only';
-            status.style.background = '#fff8e1';
-            status.style.color = '#7a5b00';
-            throw e;
+            document.getElementById('connection-status').innerHTML = '⚠️ Local Only';
+            console.warn('Sync gagal:', e);
         }
     }
     
     async function loadFromCloud() {
         try {
-            showToast('Memuat data...', 'warning');
-            
-            const result = await fetchWithRetry(GAS_URL + '?action=getAll', {
+            const response = await fetch(GAS_URL + '?action=getAll', {
                 method: 'GET',
                 headers: { 'Accept': 'application/json' }
             });
-            
+            const result = await response.json();
             if (result.status === 200 && result.data) {
                 db = result.data;
-                saveDb();
-                renderAll();
-                updateFakultasFilter();
-                updateKelompokOptions();
+                saveDb(); renderAll();
                 showToast('Data dimuat!', 'success');
-            } else {
-                throw new Error('Invalid data');
             }
         } catch(e) {
             showToast('Gagal load: ' + e.message, 'error');
         }
     }
     
-    async function syncBase64ToCloud() {
+    async function testConnection() {
         try {
-            const base64 = btoa(unescape(encodeURIComponent(JSON.stringify(db))));
-            const result = await fetchWithRetry(GAS_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'saveBase64', base64 })
+            const response = await fetch(GAS_URL + '?action=testConnection', {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' }
             });
-            
+            const result = await response.json();
             if (result.status === 200) {
-                showToast('Base64 sync berhasil!', 'success');
-            } else {
-                throw new Error('Sync failed');
+                document.getElementById('connection-status').innerHTML = '✅ Connected';
+                document.getElementById('connection-status').style.background = '#e8f5e9';
+                document.getElementById('connection-status').style.color = '#1b5e20';
+                showToast('Koneksi berhasil!', 'success');
             }
         } catch(e) {
-            showToast('Gagal sync: ' + e.message, 'error');
+            document.getElementById('connection-status').innerHTML = '❌ Failed';
+            document.getElementById('connection-status').style.background = '#ffebee';
+            document.getElementById('connection-status').style.color = '#b71c1c';
+            showToast('Gagal koneksi!', 'error');
         }
     }
     
-    // Keyboard Shortcuts
+    // ============================================
+    // EVENT LISTENERS
+    // ============================================
+    window.addEventListener('online', () => {
+        isOnline = true;
+        document.getElementById('offline-indicator').style.display = 'none';
+        if (syncQueue.length) {
+            showToast('Memproses antrian sync...', 'success');
+            syncWithCloud();
+            syncQueue = [];
+            localStorage.removeItem('pkkmb2026_sync_queue');
+        }
+    });
+    
+    window.addEventListener('offline', () => {
+        isOnline = false;
+        document.getElementById('offline-indicator').style.display = 'block';
+    });
+    
     document.addEventListener('keydown', function(e) {
         if (e.altKey) {
             const shortcuts = { '1': 'dashboard', '2': 'peserta', '3': 'kontak', '4': 'kelompok', 
@@ -2332,7 +1806,9 @@
         }
     });
     
-    // Inisialisasi
+    // ============================================
+    // INITIALIZATION
+    // ============================================
     const savedTheme = localStorage.getItem('pkkmb2026_theme');
     if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
     
@@ -2340,14 +1816,9 @@
         document.getElementById('offline-indicator').style.display = 'block';
     }
     
-    setInterval(checkSession, 60000);
-    
-    initIndexedDB();
     renderAll();
-    updateFakultasFilter();
     updateKelompokOptions();
     applyRoleBasedAccess();
-    generateCSRFToken();
     
     if (db.currentUser) {
         showSection('dashboard');
@@ -2355,7 +1826,6 @@
         showLoginModal();
     }
     
-    startAutoBackup();
     testConnection();
 </script>
 </body>
