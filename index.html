@@ -1161,7 +1161,7 @@
             <div class="countdown-timer" id="countdownTimer">00:00:00</div>
         </div>
         <div class="countdown-info" id="lockModalInfo">
-            📅 Tanggal: 30 Agustus 2026<br>
+            📅 Tanggal: 29 Agustus 2026<br>
             ⏰ Waktu: 00:01 - 23:59 WIB
         </div>
         <button class="lock-close-btn" id="lockCloseBtn">Tutup</button>
@@ -1221,7 +1221,7 @@
                 <div class="logo-fallback">🎓</div>
             </div>
             <h1 class="title">📝 Form Absen Kegiatan</h1>
-            <div class="subtitle">PKKMB • 30 Agustus 2026</div>
+            <div class="subtitle">PKKMB • 29 Agustus 2026</div>
         </div>
 
         <div class="live-sync" id="liveSync">
@@ -1841,6 +1841,7 @@
     let dataChanged = false;
     let currentStep = 1;
     const totalSteps = 11;
+    let resetCheckInterval = null;
 
     // ===================== ELEMEN =====================
     const form = document.getElementById('registrationForm');
@@ -2219,6 +2220,90 @@
             sessionId: getSessionId(),
             timestamp: Date.now()
         }));
+    }
+
+    function clearSessionSubmission() {
+        sessionStorage.removeItem('formSession');
+        localStorage.removeItem('formDraft');
+        lastSavedData = '';
+    }
+
+    // ===================== RESET FORM =====================
+    function resetForm() {
+        form.reset();
+        updateRadioStyles();
+        updateCheckboxStyles();
+        toggleAlasanField();
+        toggleOrganisasiDetail();
+        toggleBeasiswaDetail();
+        clearDraft();
+        
+        // Hapus session submission
+        clearSessionSubmission();
+        
+        // Reset emailVerified
+        emailVerified = false;
+        pendingSubmitAfterVerification = null;
+        
+        // Tampilkan form kembali
+        form.classList.remove('form-locked');
+        document.querySelectorAll('#registrationForm input, #registrationForm select, #registrationForm textarea').forEach(input => {
+            input.disabled = false;
+        });
+        submitButton.disabled = false;
+        submitButton.textContent = '✨ Kirim Absen ✨';
+        nextStepBtn.disabled = false;
+        
+        // Reset step ke 1
+        showStep(1);
+        
+        showStatus('info', '✅ Form telah direset. Silakan isi kembali.');
+        setTimeout(clearStatus, 3000);
+    }
+
+    // ===================== CHECK RESET STATUS =====================
+    async function checkResetStatus() {
+        try {
+            const sessionData = JSON.parse(sessionStorage.getItem('formSession') || '{}');
+            if (!sessionData.submitted) return;
+            
+            const email = localStorage.getItem('lastSubmittedEmail') || '';
+            if (!email) return;
+            
+            const response = await fetchWithTimeout(`${API_URL}?action=checkReset&email=${encodeURIComponent(email)}`, {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' },
+                mode: 'cors'
+            }, 10000);
+            
+            const text = await response.text();
+            let result;
+            try {
+                result = JSON.parse(text);
+            } catch {
+                return;
+            }
+            
+            if (result.success && result.dataExists === false) {
+                console.log('Data sudah dihapus dari spreadsheet. Melakukan reset form...');
+                resetForm();
+                localStorage.removeItem('lastSubmittedEmail');
+            }
+        } catch (error) {
+            // Silent fail untuk background check
+        }
+    }
+
+    function startResetCheckInterval() {
+        stopResetCheckInterval();
+        resetCheckInterval = setInterval(checkResetStatus, 5000);
+    }
+
+    function stopResetCheckInterval() {
+        if (resetCheckInterval) {
+            clearInterval(resetCheckInterval);
+            resetCheckInterval = null;
+        }
     }
 
     // ===================== RATE LIMITING =====================
@@ -3504,6 +3589,8 @@
                 
                 logActivity('submit_success', { email: payload.email, nama: payload.nama });
                 markSessionSubmitted();
+                localStorage.setItem('lastSubmittedEmail', payload.email);
+                startResetCheckInterval();
 
                 setTimeout(() => {
                     popupSuccess.style.display = 'none';
@@ -3532,6 +3619,20 @@
                 isSubmitting = false;
                 startAutoSave();
                 logActivity('submit_duplicate_whatsapp', { whatsapp: payload.whatsapp });
+            } else if (result.duplicate && result.field === 'nim') {
+                showFieldWarning('nim', '⚠️ NIM sudah terdaftar.');
+                showStatus('warning', '⚠️ NIM sudah terdaftar.');
+                setSyncStatus('error');
+                isSubmitting = false;
+                startAutoSave();
+                logActivity('submit_duplicate_nim', { nim: payload.nim });
+            } else if (result.duplicate && result.field === 'idPeserta') {
+                showFieldWarning('idPeserta', '⚠️ ID Peserta sudah terdaftar.');
+                showStatus('warning', '⚠️ ID Peserta sudah terdaftar.');
+                setSyncStatus('error');
+                isSubmitting = false;
+                startAutoSave();
+                logActivity('submit_duplicate_idPeserta', { idPeserta: payload.idPeserta });
             } else {
                 showStatus('error', '❌ ' + (result.message || 'Pengiriman gagal. Silakan coba lagi.'));
                 setSyncStatus('error');
@@ -3714,6 +3815,9 @@
         checkAndCleanExpiredRateLimit();
         checkFormAccess();
         
+        // Mulai interval untuk cek reset
+        startResetCheckInterval();
+        
         testConnection().then(isConnected => {
             if (!isConnected) {
                 showStatus('error', '⚠️ Tidak dapat terhubung ke server. Periksa kembali URL Web App atau koneksi internet.');
@@ -3739,6 +3843,7 @@
         saveDraftNow();
         logActivity('page_unloaded', { page: 'index' });
         stopCooldownCountdown();
+        stopResetCheckInterval();
     });
 
     document.addEventListener('visibilitychange', () => {
