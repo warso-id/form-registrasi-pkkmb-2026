@@ -2851,11 +2851,14 @@
         });
       }
       function updateCheckboxStyles() {
-        document.querySelectorAll('.checkbox-option').forEach((option) => {
-          const checkbox = option.querySelector('input[type="checkbox"]');
-          if (checkbox && checkbox.checked) option.classList.add('selected');
-          else option.classList.remove('selected');
-        });
+    document.querySelectorAll('.checkbox-option').forEach(option => {
+        const checkbox = option.querySelector('input[type="checkbox"]');
+        if (checkbox && checkbox.checked) {
+            option.classList.add('selected');
+        } else {
+            option.classList.remove('selected');
+        }
+    });
       }
 
       // ===================== TOGGLE FUNCTIONS =====================
@@ -3093,8 +3096,7 @@ document.querySelectorAll('input[type="radio"]').forEach(radio => {
 document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
     checkbox.addEventListener('change', function() {
         if (!this.disabled) {
-            updateCheckboxStyles();
-            saveDraftNow();
+            updateCheckboxStyles(); saveDraftNow();
         }
     });
 });
