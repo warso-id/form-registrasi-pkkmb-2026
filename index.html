@@ -1948,7 +1948,7 @@
             input.disabled = false;
         });
         submitButton.disabled = false;
-        submitButton.textContent = '✨ Kirim Absen ✨';
+        submitButton.textContent = '✨ Kirim Registrasi ✨';
         nextStepBtn.disabled = false;
         
         // Tampilkan tombol sesuai step
@@ -2171,7 +2171,7 @@
             submitButton.innerHTML = '<span class="button-loading"><span class="spinner"></span> Mengirim...</span>';
             setSyncStatus('saving');
         } else {
-            submitButton.innerHTML = '✨ Kirim Absen ✨';
+            submitButton.innerHTML = '✨ Kirim Registrasi ✨';
             triggerSyncDebounce();
         }
     }
@@ -2251,7 +2251,7 @@
             input.disabled = false;
         });
         submitButton.disabled = false;
-        submitButton.textContent = '✨ Kirim Absen ✨';
+        submitButton.textContent = '✨ Kirim Registrasi ✨';
         nextStepBtn.disabled = false;
         
         // Reset step ke 1
@@ -2367,7 +2367,7 @@
                 setTimeout(clearStatus, 3000);
                 if (!form.classList.contains('form-locked')) {
                     submitButton.disabled = false;
-                    submitButton.textContent = '✨ Kirim Absen ✨';
+                    submitButton.textContent = '✨ Kirim Registrasi ✨';
                 }
                 return;
             }
