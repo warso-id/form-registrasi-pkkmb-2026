@@ -3067,66 +3067,84 @@
         }
       });
 
-      // Radio fields
-      document.querySelectorAll('input[type="radio"]').forEach((radio) => {
-        radio.addEventListener('change', function () {
-          if (!this.disabled) {
+// Radio fields - Event listener langsung pada input
+document.querySelectorAll('input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        if (!this.disabled) {
             updateRadioStyles();
             if (this.name === 'kehadiran') {
-              toggleAlasanField();
-              clearFieldError('kehadiran');
-              clearFieldWarning('kehadiran');
-            }
-            if (this.name === 'jenisKelamin') clearFieldError('jenisKelamin');
-            if (this.name === 'tipeWali') {
-              toggleFieldWali();
-              clearFieldError('tipeWali');
-            }
-            saveDraftNow();
-          }
-        });
-      });
-
-      // Checkbox fields - BISA CEKLIST DAN UNCEK
-      document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
-        checkbox.addEventListener('change', function () {
-          if (!this.disabled) {
-            updateCheckboxStyles();
-            saveDraftNow();
-          }
-        });
-      });
-
-      // Klik pada opsi radio/checkbox
-      document.querySelectorAll('.radio-option, .checkbox-option').forEach((option) => {
-        option.addEventListener('click', function (e) {
-          if (e.target.tagName === 'INPUT') return;
-          const input = this.querySelector('input[type="radio"], input[type="checkbox"]');
-          if (input && !input.disabled) {
-            if (input.type === 'radio') {
-              input.checked = true;
-              updateRadioStyles();
-              if (input.name === 'kehadiran') {
                 toggleAlasanField();
                 clearFieldError('kehadiran');
                 clearFieldWarning('kehadiran');
-              }
-              if (input.name === 'jenisKelamin') clearFieldError('jenisKelamin');
-              if (input.name === 'tipeWali') {
+            }
+            if (this.name === 'jenisKelamin') {
+                clearFieldError('jenisKelamin');
+            }
+            if (this.name === 'tipeWali') {
                 toggleFieldWali();
                 clearFieldError('tipeWali');
-              }
-              saveDraftNow();
-              input.dispatchEvent(new Event('change', { bubbles: true }));
-            } else if (input.type === 'checkbox') {
-              input.checked = !input.checked;
-              updateCheckboxStyles();
-              saveDraftNow();
-              input.dispatchEvent(new Event('change', { bubbles: true }));
             }
-          }
-        });
-      });
+            saveDraftNow();
+        }
+    });
+});
+
+// Checkbox fields - Event listener langsung pada input
+document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        if (!this.disabled) {
+            updateCheckboxStyles();
+            saveDraftNow();
+        }
+    });
+});
+
+// Klik pada opsi radio
+document.querySelectorAll('.radio-option').forEach(option => {
+    option.addEventListener('click', function(e) {
+        // Jangan proses jika klik langsung pada input
+        if (e.target.tagName === 'INPUT') return;
+        
+        const input = this.querySelector('input[type="radio"]');
+        if (input && !input.disabled) {
+            input.checked = true;
+            updateRadioStyles();
+            
+            if (input.name === 'kehadiran') {
+                toggleAlasanField();
+                clearFieldError('kehadiran');
+                clearFieldWarning('kehadiran');
+            }
+            if (input.name === 'jenisKelamin') {
+                clearFieldError('jenisKelamin');
+            }
+            if (input.name === 'tipeWali') {
+                toggleFieldWali();
+                clearFieldError('tipeWali');
+            }
+            
+            saveDraftNow();
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    });
+});
+
+// Klik pada opsi checkbox (bisa ceklist dan uncek)
+document.querySelectorAll('.checkbox-option').forEach(option => {
+    option.addEventListener('click', function(e) {
+        // Jangan proses jika klik langsung pada input
+        if (e.target.tagName === 'INPUT') return;
+        
+        const input = this.querySelector('input[type="checkbox"]');
+        if (input && !input.disabled) {
+            // Toggle checkbox
+            input.checked = !input.checked;
+            updateCheckboxStyles();
+            saveDraftNow();
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    });
+});
 
       // ===================== STEP NAVIGATION =====================
       function showStep(step) {
