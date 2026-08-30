@@ -3220,23 +3220,38 @@
     });
 
     // Klik pada opsi radio/checkbox
-    document.querySelectorAll('.radio-option, .checkbox-option').forEach(option => {
-        option.addEventListener('click', function(e) {
-            const input = this.querySelector('input[type="radio"], input[type="checkbox"]');
-            if (input && !input.disabled) {
+document.querySelectorAll('.radio-option, .checkbox-option').forEach(option => {
+    option.addEventListener('click', function(e) {
+        const input = this.querySelector('input[type="radio"], input[type="checkbox"]');
+        if (input && !input.disabled) {
+            // Untuk radio: selalu set checked = true (karena radio tidak bisa di-uncheck)
+            if (input.type === 'radio') {
                 input.checked = true;
                 updateRadioStyles();
-                updateCheckboxStyles();
                 
-                if (input.type === 'radio') {
-                    if (input.name === 'kehadiran') toggleAlasanField();
-                    if (input.name === 'jenisKelamin') clearFieldError('jenisKelamin');
+                if (input.name === 'kehadiran') {
+                    toggleAlasanField();
+                    clearFieldError('kehadiran');
+                    clearFieldWarning('kehadiran');
                 }
+                if (input.name === 'jenisKelamin') {
+                    clearFieldError('jenisKelamin');
+                }
+                
+                saveDraftNow();
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+            } 
+            // Untuk checkbox: biarkan browser yang menangani toggle checked/unchecked
+            else if (input.type === 'checkbox') {
+                // Toggle manual untuk memastikan konsistensi
+                input.checked = !input.checked;
+                updateCheckboxStyles();
                 saveDraftNow();
                 input.dispatchEvent(new Event('change', { bubbles: true }));
             }
-        });
+        }
     });
+});
 
     // Step navigation
     function showStep(step) {
