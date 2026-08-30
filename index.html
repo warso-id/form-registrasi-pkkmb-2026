@@ -1490,7 +1490,7 @@
         if (kehadiran === 'tidak_hadir') { if (!alasan || alasan.length < 5) { showFieldError('alasan', 'Alasan minimal 5 karakter'); isValid = false; } else clearFieldError('alasan'); }
         if (!isValid) { showStatus('error', '❌ Periksa kembali field yang ditandai merah.'); logActivity('validation_failed', { fields: ['invalid'] }); return; }
         const fullData = getFormData();
-        const finalPayload = { ...fullData, nama: nama, email: email, whatsapp: whatsapp, kehadiran: kehadiran, alasan: alasan, semester: 'Genap 2025/2026', periode: 'Februari 2026 - Agustus 2027', tanggalPelaksanaan: CONFIG_WAKTU.tanggal, waktuMulai: CONFIG_WAKTU.mulai, waktuSelesai: CONFIG_WAKTU.selesai };
+        const finalPayload = { ...fullData, nama: nama, email: email, whatsapp: whatsapp, kehadiran: kehadiran, alasan: alasan, semester: 'Ganjil 2026/2027', periode: 'September 2026 - Januari 2027', tanggalPelaksanaan: CONFIG_WAKTU.tanggal, waktuMulai: CONFIG_WAKTU.mulai, waktuSelesai: CONFIG_WAKTU.selesai };
         if (!emailVerified) { pendingSubmitAfterVerification = finalPayload; showVerificationModal(email); return; }
         isSubmitting = true; saveDraftNow(); logActivity('form_submitted_for_review', { email: email }); showConfirmation(finalPayload);
     });
