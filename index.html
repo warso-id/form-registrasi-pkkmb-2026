@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Form Absen Kegiatan - Fakultas Ilmu Komunikasi Universitas Prof. Dr. Moestopo (Beragama)">
+    <meta name="description" content="Form Registrasi Kegiatan - Fakultas Ilmu Komunikasi Universitas Prof. Dr. Moestopo (Beragama)">
     <meta name="theme-color" content="#052e16">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -164,7 +164,7 @@
 <body>
 
 <!-- SPLASH SCREEN LOGO -->
-<div id="splashScreen" class="splash-screen" tabindex="0" role="button" aria-label="Klik untuk masuk ke form absen kegiatan">
+<div id="splashScreen" class="splash-screen" tabindex="0" role="button" aria-label="Klik untuk masuk ke form Registrasi kegiatan">
     <div class="splash-content">
         <div class="splash-logo-container">
             <div class="spinner-ring ring-1"></div>
@@ -225,7 +225,7 @@
 <!-- KONFIRMASI DIALOG -->
 <div id="confirmationDialog" class="confirmation-dialog">
     <div class="confirmation-content">
-        <h3>📋 Review Data Absen</h3>
+        <h3>📋 Review Data Registrasi</h3>
         <div id="confirmationData" style="text-align: left; color: #d1fae5; font-size: 14px; line-height: 1.8;"></div>
         <div class="confirmation-buttons">
             <button class="confirm-btn confirm-yes" id="confirmYes">✅ Ya, Kirim</button>
@@ -819,7 +819,7 @@
                 <button type="button" id="nextStep" class="confirm-btn confirm-yes" style="margin-left: auto;">➡️ Berikutnya</button>
             </div>
 
-            <button type="submit" id="submitButton" class="submit-button" aria-label="Kirim absen kegiatan" style="display:none;" disabled>🔒 Form Terkunci</button>
+            <button type="submit" id="submitButton" class="submit-button" aria-label="Kirim Registrasi kegiatan" style="display:none;" disabled>🔒 Form Terkunci</button>
             <div id="status" class="status" role="alert" aria-live="assertive"></div>
         </form>
     </div>
@@ -953,7 +953,7 @@
     function unlockForm() {
         form.classList.remove('form-locked');
         formLockStatus.className = 'status success show';
-        formLockStatus.textContent = '✅ Form sudah dibuka. Silakan isi absen Anda.';
+        formLockStatus.textContent = '✅ Form sudah dibuka. Silakan isi Registrasi Anda.';
         document.querySelectorAll('#registrationForm input, #registrationForm select, #registrationForm textarea').forEach(input => { input.disabled = false; });
         submitButton.disabled = false;
         submitButton.textContent = '✨ Kirim Registrasi ✨';
@@ -1026,7 +1026,7 @@
     function checkSession() {
         const sessionData = JSON.parse(sessionStorage.getItem('formSession') || '{}');
         if (sessionData.submitted) {
-            showStatus('warning', '⚠️ Anda sudah mengisi absen. Mencoba cek status data...');
+            showStatus('warning', '⚠️ Anda sudah mengisi Registrasi. Mencoba cek status data...');
             checkResetStatus();
             form.classList.add('form-locked');
             document.querySelectorAll('#registrationForm input, #registrationForm select, #registrationForm textarea').forEach(input => { input.disabled = true; });
@@ -1435,9 +1435,9 @@
             if (result.success) {
                 let certMsg = '';
                 if (result.certificate && result.certificate.success) certMsg = ' ✅ Email konfirmasi berhasil dikirim.';
-                else if (result.certificate && !result.certificate.success) certMsg = ' ⚠️ Absen tersimpan, tetapi email konfirmasi gagal dikirim.';
+                else if (result.certificate && !result.certificate.success) certMsg = ' ⚠️ Registrasi tersimpan, tetapi email konfirmasi gagal dikirim.';
                 else certMsg = ' ✅ Data tersimpan.';
-                showStatus('success', `✅ Absen berhasil dikirim!${certMsg}`);
+                showStatus('success', `✅ Registrasi berhasil dikirim!${certMsg}`);
                 triggerSyncDebounce();
                 popupSuccess.style.display = 'block';
                 form.reset();
